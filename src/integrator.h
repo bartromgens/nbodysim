@@ -18,12 +18,10 @@
 class Integrator
 {
 public:
-  Integrator(Environment* environment, Body* body);
+  explicit Integrator(Environment* environment, Body* body);
   ~Integrator();
 
   const std::array<double, 4>& integrate(double stepsize);
-
-  void updateState();
 
 private:
   void oneStep(double stepsize);

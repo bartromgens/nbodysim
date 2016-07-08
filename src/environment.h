@@ -10,12 +10,11 @@
 class Environment {
 
 public:
-  Environment(double gravitationalConstant=6.67408e-11);
+  explicit Environment(double gravitationalConstant=6.67408e-11);
   ~Environment();
 
   void addBody(Body* body);
   void addMasslessBody(Body* body);
-  void mergeBodies();
   void clearAllBodies();
 
   void oneStep(double tEnd, double stepsize);

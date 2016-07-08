@@ -13,7 +13,7 @@ class Environment;
 class Body
 {
 public:
-  Body(Environment* environment);
+  explicit Body(Environment* environment);
   ~Body();
 
   void oneStep(double stepsize);
