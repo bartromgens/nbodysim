@@ -1,6 +1,3 @@
-
-#include "importsettings.h"
-
 #include "environment.h"
 
 #include <cmath>

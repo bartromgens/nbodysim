@@ -1,6 +1,5 @@
 #include "integrator.h"
 #include "environment.h"
-#include "importsettings.h"
 
 #include "body.h"
 
