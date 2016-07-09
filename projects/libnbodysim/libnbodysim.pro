@@ -11,18 +11,18 @@ VPATH += $$INCLUDEPATH
 SOURCES += \
   body.cpp \
   environment.cpp \
-  integrator.cpp
+  integrator.cpp \
 
 HEADERS += \
   body.h \
   environment.h \
-  integrator.h
+  integrator.h \
 
 UI_DIR += ./generated
 MOC_DIR += ./generated
 
 # use c++11
-QMAKE_CXXFLAGS += -std=c++11 -pthread
+QMAKE_CXXFLAGS += -std=c++11
 
 # for std::thread
 QMAKE_CXXFLAGS += -pthread

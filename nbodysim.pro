@@ -1,20 +1,19 @@
 TEMPLATE = subdirs
 
-# main libs to create
+# main lib
 libnbodysim.subdir = projects/libnbodysim
 
 # tests
 tests.subdir = projects/tests
 tests.depends += libnbodysim
 
-# examples
-#example.subdir = projects/examples/
-#example.depends += libnbodysim
+# example
+solarsystem.subdir = projects/solarsystem
+solarsystem.depends += libnbodysim
 
 SUBDIRS += libnbodysim
-
 SUBDIRS += tests
-#SUBDIRS += example
+SUBDIRS += solarsystem
 
 
 CONFIG += silent
