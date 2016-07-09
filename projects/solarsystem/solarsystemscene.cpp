@@ -6,6 +6,8 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsSceneMouseEvent>
 
+const double AU = 149.6e9;
+
 
 SolarSystemScene::SolarSystemScene()
 : m_environment(new Environment()),
@@ -19,7 +21,7 @@ SolarSystemScene::SolarSystemScene()
   m_sun->setVelocity(0, 0);
   m_earth->setMass(5.972e24);
   m_earth->setPosition(152.10e9, 0.0);
-  m_earth->setVelocity(0.0, 29294.7);
+  m_earth->setVelocity(0.0, -29294.7);
 }
 
 
@@ -32,7 +34,8 @@ void
 SolarSystemScene::init()
 {
   m_environment->addBody(m_sun.get());
-  m_sunItem = addEllipse(10, 10, 20, 10);
+  m_environment->addBody(m_earth.get());
+  m_sunItem = addEllipse(500, 500, 20, 20);
   m_earthItem = addEllipse(20, 10, 10, 10);
 }
 
@@ -40,12 +43,12 @@ SolarSystemScene::init()
 void
 SolarSystemScene::step()
 {
-  double tEnd = 10.0;
-  double stepsize = 1.0;
+  double tEnd = 60*60*24;
+  double stepsize = 60.0;
   m_environment->oneStep(tEnd, stepsize);
-  double xEarth = m_earth->getState()[0];
-  double yEarth = m_earth->getState()[1];
-  std::cout << xEarth << ", " << yEarth << std::endl;
+  double xEarth = m_earth->getState()[0]/AU * 500 + 500;
+  double yEarth = m_earth->getState()[1]/AU * 500 + 500;
+//  std::cout << xEarth << ", " << yEarth << std::endl;
   m_earthItem->setPos(xEarth, yEarth);
 }
 

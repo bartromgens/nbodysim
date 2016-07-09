@@ -3,8 +3,10 @@
 
 #include <QMainWindow>
 
-class SolarSystemScene;
 class QGraphicsView;
+class QTimer;
+
+class SolarSystemScene;
 
 
 class MainWindow : public QMainWindow
@@ -15,7 +17,11 @@ public:
   MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+private slots:
+  void step();
+
 private:
+  QTimer* m_timer;
   QGraphicsView* m_view;
   SolarSystemScene* m_scene;
 };
