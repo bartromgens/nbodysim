@@ -70,7 +70,6 @@ Environment::oneStepImpl(double tEnd, double stepsize)
 
   int steps = tEnd/stepsizeAbsolute;
   assert(steps >= 0);
-  std::cout << "steps: " << steps << std::endl;
 
   for (int i = 0; i < steps; ++i)
   {
