@@ -23,9 +23,9 @@ public:
 
   void setMass(double mass);
 
-  double getMass();
-  const std::array<double, 4>& getState();
-  const std::array<double, 2>& getParameters();
+  double getMass() const;
+  const std::array<double, 4>& getState() const;
+  const std::array<double, 2>& getParameters() const;
 
   void printPosition() const;
   void printVelocity() const;

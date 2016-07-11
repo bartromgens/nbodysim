@@ -64,21 +64,21 @@ Body::setMass(double mass)
 
 
 double
-Body::getMass()
+Body::getMass() const
 {
   return m_para[0];
 }
 
 
 const std::array<double, 4>&
-Body::getState()
+Body::getState() const
 {
   return m_x;
 }
 
 
 const std::array<double, 2>&
-Body::getParameters()
+Body::getParameters() const
 {
   return m_para;
 }
