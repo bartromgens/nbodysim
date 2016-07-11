@@ -3,6 +3,7 @@
 #include "body.h"
 
 #include <QGraphicsEllipseItem>
+#include <QPen>
 
 
 const double AU = 149.6e9;
@@ -13,9 +14,11 @@ BodyItem::BodyItem(Body* body)
   m_item(0),
   m_radius(1.0)
 {
-  m_radius = std::pow(body->getMass(), 1/6.0) / std::pow(earthMass, 1/6.0) * 10.0;
+  m_radius = std::pow(body->getMass(), 1/6.0) / std::pow(earthMass, 1/6.0) * 3.0;
   std::cout << "radius: " << m_radius << std::endl;
   m_item = new QGraphicsEllipseItem(20, 10, 2*m_radius, 2*m_radius);
+  m_item->setPen(QPen(Qt::white));
+  m_item->setBrush(QBrush(Qt::white));
 }
 
 

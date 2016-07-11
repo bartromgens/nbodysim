@@ -51,7 +51,6 @@ SolarSystemScene::SolarSystemScene()
   venus->setVelocity(0.0, -venusVy);
   addBody(venus);
 
-
 //  Body* moon = new Body(m_environment.get());
 //  moon->setMass(7.34767e22);
 //  double moonX = 405.400e6 * 1.0;
@@ -84,6 +83,8 @@ SolarSystemScene::addBody(Body* body)
 void
 SolarSystemScene::init()
 {
+  QBrush brush(Qt::black);
+  setBackgroundBrush(brush);
   for (const BodyItem& planet : m_bodyItems)
   {
     addItem(planet.getItem());
