@@ -51,6 +51,16 @@ SolarSystemScene::SolarSystemScene()
   venus->setVelocity(0.0, -venusVy);
   addBody(venus);
 
+  Body* mercury = new Body(m_environment.get());
+  double mercuryEccentricity = 0.205630;
+  const double mercuryMass = 3.3011e23;
+  mercury->setMass(mercuryMass);
+  double mercuryX = 69.81690e9;
+  double mercuryVy = calcOrbitalVelocity(mercuryX, mercuryEccentricity, muSun);
+  mercury->setPosition(mercuryX, 0.0);
+  mercury->setVelocity(0.0, -mercuryVy);
+  addBody(mercury);
+
 //  Body* moon = new Body(m_environment.get());
 //  moon->setMass(7.34767e22);
 //  double moonX = 405.400e6 * 1.0;
