@@ -32,8 +32,6 @@
 *.out
 *.app
 
-tests
-solarsystem
 Makefile
 *.pro.user
 moc_*
