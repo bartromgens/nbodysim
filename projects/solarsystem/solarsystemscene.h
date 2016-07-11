@@ -7,6 +7,7 @@
 
 class Environment;
 class Body;
+class BodyItem;
 
 
 class SolarSystemScene : public QGraphicsScene
@@ -24,9 +25,8 @@ protected:
 private:
   std::unique_ptr<Environment> m_environment;
   std::unique_ptr<Body> m_sun;
-  std::unique_ptr<Body> m_earth;
   QGraphicsEllipseItem* m_sunItem;
-  QGraphicsEllipseItem* m_earthItem;
+  std::vector<BodyItem> m_planets;
 };
 
 #endif // SOLARSYSTEMSCENE_H

@@ -3,12 +3,15 @@
 
 #include "body.h"
 
+unsigned int Body::ms_nextUniqueId = 1;
+
 Body::Body(Environment* environment)
-  : m_x(),
-    m_para(),
-    m_integrator(),
-    m_environment(environment),
-    m_nSteps(0)
+: m_id(ms_nextUniqueId++),
+  m_x(),
+  m_para(),
+  m_integrator(),
+  m_environment(environment),
+  m_nSteps(0)
 {
   m_x[0] = 200.0;
   m_x[1] = 200.0;
@@ -93,6 +96,12 @@ Body::printVelocity() const
 {
   double speed = std::sqrt(m_x[2]*m_x[2]+m_x[3]*m_x[3]);
   std::cout << "vel: " << m_x[2] << ", " << m_x[3] << ", speed: " << speed << std::endl;
+}
+
+unsigned int
+Body::getId() const
+{
+  return m_id;
 }
 
 

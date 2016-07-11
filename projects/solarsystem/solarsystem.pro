@@ -18,7 +18,6 @@ INCLUDEPATH += ../../src/
 DEPENDPATH += $$INCLUDEPATH
 VPATH += $$INCLUDEPATH
 
-# use c++11
 QMAKE_CXXFLAGS += -std=c++11
 
 CONFIG += silent
@@ -26,8 +25,10 @@ CONFIG += silent
 SOURCES += \
   main.cpp \
   mainwindow.cpp \
-  solarsystemscene.cpp
+  solarsystemscene.cpp \
+  bodyitem.cpp
 
 HEADERS  += \
   mainwindow.h \
-  solarsystemscene.h
+  solarsystemscene.h \
+  bodyitem.h

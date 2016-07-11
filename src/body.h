@@ -30,10 +30,14 @@ public:
   void printPosition() const;
   void printVelocity() const;
 
+  unsigned int getId() const;
+
 private:
   double random(double start, double end);
 
 private:
+  static unsigned int ms_nextUniqueId;
+  unsigned int m_id;
   std::array<double, 4> m_x;
   std::array<double, 2> m_para; // {mass, radius}
 
