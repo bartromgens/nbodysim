@@ -23,10 +23,12 @@ protected:
   void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
+  void addBody(Body* body);
+
+private:
   std::unique_ptr<Environment> m_environment;
-  std::unique_ptr<Body> m_sun;
-  QGraphicsEllipseItem* m_sunItem;
-  std::vector<BodyItem> m_planets;
+  std::vector<BodyItem> m_bodyItems;
+  std::vector<Body*> m_bodies;
 };
 
 #endif // SOLARSYSTEMSCENE_H
