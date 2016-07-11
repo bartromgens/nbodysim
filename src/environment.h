@@ -25,6 +25,7 @@ public:
   double getFieldStrength(double x, double y);
   double getEnergy();
   double getLinearMomentum();
+  double getGravitationalConstant() const;
 
 private:
   void oneStepImpl(double tEnd, double stepsize);

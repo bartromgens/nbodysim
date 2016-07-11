@@ -101,7 +101,7 @@ Environment::getStateDerivative(const std::array<double, 4>& x, Body* ignoreBody
     double x12 = x[0]-m_x2[0];
     double y12 = x[1]-m_x2[1];
     double r = sqrt(x12*x12+y12*y12);
-    if (r > 1.0/std::sqrt(m_gravitationalConstant))
+    if (r > 0.1/std::sqrt(m_gravitationalConstant))
     {
       double mu = (*iter)->getMass() * m_gravitationalConstant;
       double r3 = r*r*r;
@@ -111,6 +111,8 @@ Environment::getStateDerivative(const std::array<double, 4>& x, Body* ignoreBody
     else
     {
       // TODO: make a better rule
+      std::cout << "limit: " << 1.0/std::sqrt(m_gravitationalConstant) << std::endl;
+      std::cout << "r: " << r << std::endl;
       assert(false);
     }
   }
@@ -201,5 +203,12 @@ Environment::getLinearMomentum()
   }
 
   return linearMomentum;
+}
+
+
+double
+Environment::getGravitationalConstant() const
+{
+  return m_gravitationalConstant;
 }
 

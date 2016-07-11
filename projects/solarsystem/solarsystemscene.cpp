@@ -10,21 +10,55 @@
 
 const double AU = 149.6e9;
 
+namespace
+{
+  double calcOrbitalVelocity(double apogeeX, double eccentricity, double muCentralBody)
+  {
+    double apogeeVy = std::sqrt(muCentralBody/apogeeX*(1.0-eccentricity));
+    return apogeeVy;
+  }
+}
+
 
 SolarSystemScene::SolarSystemScene()
 : m_environment(new Environment())
 {
+  const double sunMass = 1.989e30;
+  const double muSun = sunMass*m_environment->getGravitationalConstant();
+  Body* sun = new Body(m_environment.get());
+  sun->setMass(sunMass);
+  sun->setVelocity(0.0, 0.0);
+  sun->setPosition(0.0, 0.0);
+  addBody(sun);
+
   Body* earth = new Body(m_environment.get());
-  earth->setMass(5.972e24);
-  earth->setVelocity(0.0, -29294.7);
-  earth->setPosition(152.10e9, 0.0);
+  double earthEccentricity = 0.0167086;
+  const double earthMass = 5.972e24;
+  earth->setMass(earthMass);
+  double earthX = 152.10e9;
+  double earthVy = calcOrbitalVelocity(earthX, earthEccentricity, muSun);
+  earth->setPosition(earthX, 0.0);
+  earth->setVelocity(0.0, -earthVy);
   addBody(earth);
 
-  Body* sun = new Body(m_environment.get());
-  sun->setMass(1.989e30);
-  sun->setVelocity(0, 0);
-  sun->setPosition(0, 0);
-  addBody(sun);
+  Body* venus = new Body(m_environment.get());
+  double venusEccentricity = 0.0167086;
+  const double venusMass = 4.8675e24;
+  venus->setMass(venusMass);
+  double venusX = 108.939e9;
+  double venusVy = calcOrbitalVelocity(venusX, venusEccentricity, muSun);
+  venus->setPosition(venusX, 0.0);
+  venus->setVelocity(0.0, -venusVy);
+  addBody(venus);
+
+
+//  Body* moon = new Body(m_environment.get());
+//  moon->setMass(7.34767e22);
+//  double moonX = 405.400e6 * 1.0;
+//  double moonVy = calcOrbitalVelocity(moonX, eccentricity, muEarth);
+//  moon->setPosition(earthX + moonX, 0.0);
+//  moon->setVelocity(0.0, earthVy - moonVy);
+//  addBody(moon);
 }
 
 
@@ -60,7 +94,7 @@ SolarSystemScene::init()
 void
 SolarSystemScene::step()
 {
-  double tEnd = 60*60*24;
+  double tEnd = 60*60*6.0;
   double stepsize = 60.0;
   m_environment->oneStep(tEnd, stepsize);
 
