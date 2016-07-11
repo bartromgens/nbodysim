@@ -42,7 +42,7 @@ SolarSystemScene::SolarSystemScene()
   addBody(earth);
 
   Body* venus = new Body(m_environment.get());
-  double venusEccentricity = 0.0167086;
+  double venusEccentricity = 0.006772;
   const double venusMass = 4.8675e24;
   venus->setMass(venusMass);
   double venusX = 108.939e9;
