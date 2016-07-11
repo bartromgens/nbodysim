@@ -6,11 +6,16 @@
 
 
 const double AU = 149.6e9;
+const double earthMass = 5.972e24;
 
 BodyItem::BodyItem(Body* body)
-: m_body(body)
+: m_body(body),
+  m_item(0),
+  m_radius(1.0)
 {
-  m_item = new QGraphicsEllipseItem(20, 10, 10, 10);
+  m_radius = std::pow(body->getMass(), 1/6.0) / std::pow(earthMass, 1/6.0) * 10.0;
+  std::cout << "radius: " << m_radius << std::endl;
+  m_item = new QGraphicsEllipseItem(20, 10, 2*m_radius, 2*m_radius);
 }
 
 
@@ -32,8 +37,8 @@ void
 BodyItem::update()
 {
   const std::array<double, 4> state = m_body->getState();
-  double x = state[0]/AU * 500 + 500;
-  double y = state[1]/AU * 500 + 500;;
-  m_item->setPos(x, y);
+  double x = state[0]/AU * 400 + 400 - m_radius;
+  double y = state[1]/AU * 400 + 400 - m_radius;
+  m_item->setPos(x, y);  // -y due to Qt coordinate system
 }
 
