@@ -3,6 +3,9 @@
 
 #include <memory>
 
+#include <QPointF>
+#include <QColor>
+
 class Body;
 class QGraphicsEllipseItem;
 
@@ -10,11 +13,17 @@ class QGraphicsEllipseItem;
 class BodyItem
 {
 public:
-  BodyItem(Body* body);
+  BodyItem(Body* body, const QColor& color=Qt::white);
 
   void update();
   QGraphicsEllipseItem* getItem() const;
   unsigned int getRadius() const;
+
+  static unsigned int calcRadius(double mass);
+
+  static QPointF envToScene(const QPointF& point);
+
+  static QPointF sceneToEnv(const QPointF& point);
 
 private:
 

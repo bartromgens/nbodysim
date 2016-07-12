@@ -8,7 +8,9 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsSceneMouseEvent>
 
+
 const double AU = 149.6e9;
+const double muSun = 1.32712440018e20;
 
 namespace
 {
@@ -21,15 +23,16 @@ namespace
 
 
 SolarSystemScene::SolarSystemScene()
-: m_environment(new Environment())
+: m_environment(new Environment()),
+  m_newBody(),
+  m_tempBodyItem(0)
 {
   const double sunMass = 1.989e30;
-  const double muSun = sunMass*m_environment->getGravitationalConstant();
   Body* sun = new Body(m_environment.get());
   sun->setMass(sunMass);
   sun->setVelocity(0.0, 0.0);
   sun->setPosition(0.0, 0.0);
-  addBody(sun);
+  addBody(sun, Qt::yellow);
 
   Body* earth = new Body(m_environment.get());
   double earthEccentricity = 0.0167086;
@@ -82,23 +85,20 @@ SolarSystemScene::~SolarSystemScene()
 
 
 void
-SolarSystemScene::addBody(Body* body)
+SolarSystemScene::addBody(Body* body, const QColor& color)
 {
   m_environment->addBody(body);
-  m_bodyItems.push_back(BodyItem(body));
+  BodyItem* bodyItem = new BodyItem(body, color);
+  m_bodyItems.push_back(bodyItem);
   m_bodies.push_back(body);
+  addItem(bodyItem->getItem());
 }
 
 
 void
 SolarSystemScene::init()
 {
-  QBrush brush(Qt::black);
-  setBackgroundBrush(brush);
-  for (const BodyItem& planet : m_bodyItems)
-  {
-    addItem(planet.getItem());
-  }
+  setBackgroundBrush(QBrush(Qt::black));
 }
 
 
@@ -106,12 +106,12 @@ void
 SolarSystemScene::step()
 {
   double tEnd = 60*60*6.0;
-  double stepsize = 60.0;
+  double stepsize = 30.0;
   m_environment->oneStep(tEnd, stepsize);
 
-  for (BodyItem& planet : m_bodyItems)
+  for (BodyItem* planet : m_bodyItems)
   {
-    planet.update();
+    planet->update();
   }
 }
 
@@ -120,6 +120,30 @@ void
 SolarSystemScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
   qDebug() << event->scenePos();
+
+  if (m_newBody)
+  {
+    Body* body = new Body(m_environment.get());
+    body->setMass(m_newBody->m_mass);
+    QPointF envPos = BodyItem::sceneToEnv(m_newBody->scenePos);
+    QPointF velVect = event->scenePos() - m_newBody->scenePos;
+    velVect = velVect * 2.0e2;
+    body->setPosition(envPos.x(), envPos.y());
+    body->setVelocity(velVect.x(), velVect.y());
+    addBody(body, Qt::green);
+    removeItem(m_tempBodyItem);
+    delete m_tempBodyItem;
+    m_tempBodyItem = 0;
+    m_newBody.release();
+  }
+  else
+  {
+    double mass = 5.0e28;
+    double radius = BodyItem::calcRadius(mass);
+    m_tempBodyItem = addEllipse(event->scenePos().x()-radius, event->scenePos().y()-radius, 2*radius, 2*radius, QPen(Qt::darkGreen), QBrush(Qt::darkGreen));
+    m_newBody.reset(new NewBodyData(mass, event->scenePos()));
+  }
+
   QGraphicsScene::mousePressEvent(event);
 }
 

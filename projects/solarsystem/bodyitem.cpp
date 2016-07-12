@@ -2,6 +2,7 @@
 
 #include "body.h"
 
+#include <QDebug>
 #include <QGraphicsEllipseItem>
 #include <QPen>
 
@@ -9,16 +10,16 @@
 const double AU = 149.6e9;
 const double earthMass = 5.972e24;
 
-BodyItem::BodyItem(Body* body)
+BodyItem::BodyItem(Body* body, const QColor& color)
 : m_body(body),
   m_item(0),
   m_radius(1.0)
 {
-  m_radius = std::pow(body->getMass(), 1/6.0) / std::pow(earthMass, 1/6.0) * 3.0;
+  m_radius = calcRadius(body->getMass());
   std::cout << "radius: " << m_radius << std::endl;
-  m_item = new QGraphicsEllipseItem(20, 10, 2*m_radius, 2*m_radius);
-  m_item->setPen(QPen(Qt::white));
-  m_item->setBrush(QBrush(Qt::white));
+  m_item = new QGraphicsEllipseItem(0, 0, 2*m_radius, 2*m_radius);
+  m_item->setPen(QPen(color));
+  m_item->setBrush(QBrush(color));
 }
 
 
@@ -32,7 +33,14 @@ BodyItem::getItem() const
 unsigned int
 BodyItem::getRadius() const
 {
-  return m_body->getMass();
+  return m_radius;
+}
+
+
+unsigned int
+BodyItem::calcRadius(double mass)
+{
+  return std::pow(mass, 1/6.0) / std::pow(earthMass, 1/6.0) * 3.0;
 }
 
 
@@ -40,8 +48,25 @@ void
 BodyItem::update()
 {
   const std::array<double, 4> state = m_body->getState();
-  double x = state[0]/AU * 400 + 400 - m_radius;
-  double y = state[1]/AU * 400 + 400 - m_radius;
-  m_item->setPos(x, y);  // -y due to Qt coordinate system
+  QPointF scenePos = envToScene(QPointF(state[0], state[1]));
+  m_item->setPos(scenePos.x() - m_radius, scenePos.y() - m_radius);
 }
 
+
+QPointF
+BodyItem::envToScene(const QPointF& point)
+{
+  double x = point.x()/AU * 400 + 400;
+  double y = point.y()/AU * 400 + 400;
+  QPointF pointScene(x, y);
+  return pointScene;
+}
+
+
+QPointF
+BodyItem::sceneToEnv(const QPointF& point)
+{
+  double x = (point.x()-400) * AU / 400;
+  double y = (point.y()-400) * AU / 400;
+  return QPointF(x, y);
+}

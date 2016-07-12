@@ -15,14 +15,15 @@ MainWindow::MainWindow(QWidget *parent)
   m_scene(new SolarSystemScene())
 {
   m_view->setScene(m_scene);
-  setCentralWidget(m_view);
+  m_view->setSceneRect(QRectF(0, 0, 1000, 800));
+  m_view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
   m_scene->init();
 
-  m_view->setSceneRect(QRectF(0, 0, 1000, 1000));
+  setCentralWidget(m_view);
 
   connect(m_timer, SIGNAL(timeout()), this, SLOT(step()));
-  m_timer->start(1000/60);
+  m_timer->start(1000/80);
 }
 
 
