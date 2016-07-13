@@ -32,7 +32,9 @@ protected:
   void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
-  void addBody(Body* body, const QColor& color=Qt::white);
+  BodyItem* addBody(Body* body, const QColor& color=Qt::white);
+  void detectCollision();
+  void removeBodyItem(BodyItem* bodyItem);
 
 private:
   std::unique_ptr<Environment> m_environment;
@@ -40,6 +42,7 @@ private:
   std::vector<Body*> m_bodies;
   std::unique_ptr<NewBodyData> m_newBody;
   QGraphicsEllipseItem* m_tempBodyItem;
+  BodyItem* m_sunItem;
 };
 
 #endif // SOLARSYSTEMSCENE_H

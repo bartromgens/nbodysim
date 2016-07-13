@@ -25,14 +25,15 @@ namespace
 SolarSystemScene::SolarSystemScene()
 : m_environment(new Environment()),
   m_newBody(),
-  m_tempBodyItem(0)
+  m_tempBodyItem(0),
+  m_sunItem(0)
 {
   const double sunMass = 1.989e30;
   Body* sun = new Body(m_environment.get());
   sun->setMass(sunMass);
   sun->setVelocity(0.0, 0.0);
   sun->setPosition(0.0, 0.0);
-  addBody(sun, Qt::yellow);
+  m_sunItem = addBody(sun, Qt::yellow);
 
   Body* earth = new Body(m_environment.get());
   double earthEccentricity = 0.0167086;
@@ -84,7 +85,7 @@ SolarSystemScene::~SolarSystemScene()
 }
 
 
-void
+BodyItem*
 SolarSystemScene::addBody(Body* body, const QColor& color)
 {
   m_environment->addBody(body);
@@ -92,6 +93,7 @@ SolarSystemScene::addBody(Body* body, const QColor& color)
   m_bodyItems.push_back(bodyItem);
   m_bodies.push_back(body);
   addItem(bodyItem->getItem());
+  return bodyItem;
 }
 
 
@@ -113,6 +115,8 @@ SolarSystemScene::step()
   {
     planet->update();
   }
+
+  detectCollision();
 }
 
 
@@ -147,3 +151,32 @@ SolarSystemScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
   QGraphicsScene::mousePressEvent(event);
 }
 
+
+void
+SolarSystemScene::detectCollision()
+{
+  for (const auto& bodyItem : m_bodyItems)
+  {
+    if (bodyItem != m_sunItem && bodyItem->getItem()->collidesWithItem(m_sunItem->getItem()))
+    {
+      std::cout << "COLLISION" << std::endl;
+      removeBodyItem(bodyItem);
+    }
+  }
+}
+
+
+void
+SolarSystemScene::removeBodyItem(BodyItem* bodyItem)
+{
+  m_bodyItems.erase( std::remove(m_bodyItems.begin(), m_bodyItems.end(), bodyItem), m_bodyItems.end() );
+  removeItem(bodyItem->getItem());
+  for (const auto& body : m_bodies)
+  {
+    if (body == bodyItem->getBody())
+    {
+      m_environment->removeBody(body);
+      break;
+    }
+  }
+}

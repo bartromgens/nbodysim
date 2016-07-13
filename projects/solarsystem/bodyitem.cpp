@@ -10,6 +10,8 @@
 const double AU = 149.6e9;
 const double earthMass = 5.972e24;
 
+const double sceneCentreOffset = 400.0;
+
 BodyItem::BodyItem(Body* body, const QColor& color)
 : m_body(body),
   m_item(0),
@@ -27,6 +29,13 @@ QGraphicsEllipseItem*
 BodyItem::getItem() const
 {
   return m_item;
+}
+
+
+const Body*
+BodyItem::getBody() const
+{
+  return m_body.get();
 }
 
 
@@ -56,8 +65,8 @@ BodyItem::update()
 QPointF
 BodyItem::envToScene(const QPointF& point)
 {
-  double x = point.x()/AU * 400 + 400;
-  double y = point.y()/AU * 400 + 400;
+  double x = point.x()/AU * sceneCentreOffset + sceneCentreOffset;
+  double y = point.y()/AU * sceneCentreOffset + sceneCentreOffset;
   QPointF pointScene(x, y);
   return pointScene;
 }
@@ -66,7 +75,7 @@ BodyItem::envToScene(const QPointF& point)
 QPointF
 BodyItem::sceneToEnv(const QPointF& point)
 {
-  double x = (point.x()-400) * AU / 400;
-  double y = (point.y()-400) * AU / 400;
+  double x = (point.x() - sceneCentreOffset) * AU / sceneCentreOffset;
+  double y = (point.y() - sceneCentreOffset) * AU / sceneCentreOffset;
   return QPointF(x, y);
 }

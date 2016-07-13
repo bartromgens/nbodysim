@@ -17,6 +17,7 @@ public:
 
   void update();
   QGraphicsEllipseItem* getItem() const;
+  const Body* getBody() const;
   unsigned int getRadius() const;
 
   static unsigned int calcRadius(double mass);
