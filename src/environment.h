@@ -15,6 +15,7 @@ public:
 
   void addBody(Body* body);
   void addMasslessBody(Body* body);
+  void removeBody(Body* body);
   void clearAllBodies();
 
   void oneStep(double tEnd, double stepsize);

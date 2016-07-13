@@ -1,7 +1,8 @@
 #include "environment.h"
 
-#include <cmath>
+#include <algorithm>
 #include <cassert>
+#include <cmath>
 #include <functional>
 #include <thread>
 
@@ -21,6 +22,13 @@ Environment::addBody(Body* body)
 {
 //  std::lock_guard<std::mutex> lock(m_mutex);
   m_bodies.push_back(body);
+}
+
+
+void
+Environment::removeBody(Body* body)
+{
+  m_bodies.erase( std::remove(m_bodies.begin(), m_bodies.end(), body), m_bodies.end() );
 }
 
 
