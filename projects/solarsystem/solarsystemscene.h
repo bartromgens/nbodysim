@@ -33,7 +33,7 @@ protected:
 
 private:
   BodyItem* addBody(Body* body, const QColor& color=Qt::white);
-  void detectCollision();
+  void detectCollisionWithSun();
   void removeBodyItem(BodyItem* bodyItem);
 
 private:

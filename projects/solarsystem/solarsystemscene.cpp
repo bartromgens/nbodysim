@@ -116,7 +116,7 @@ SolarSystemScene::step()
     planet->update();
   }
 
-  detectCollision();
+  detectCollisionWithSun();
 }
 
 
@@ -153,13 +153,23 @@ SolarSystemScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 
 void
-SolarSystemScene::detectCollision()
+SolarSystemScene::detectCollisionWithSun()
 {
   for (const auto& bodyItem : m_bodyItems)
   {
     if (bodyItem != m_sunItem && bodyItem->getItem()->collidesWithItem(m_sunItem->getItem()))
     {
       std::cout << "COLLISION" << std::endl;
+      // conserve momentum
+      Body* sun = m_sunItem->getBody();
+      const Body* other = bodyItem->getBody();
+      double momentumStartX = other->getState()[2] * other->getMass() + sun->getState()[2] * sun->getMass();
+      double momentumStartY = other->getState()[3] * other->getMass() + sun->getState()[3] * sun->getMass();
+      double combinedMass = sun->getMass() + other->getMass();
+      double vxSunNew = momentumStartX / combinedMass;
+      double vySunNew = momentumStartY / combinedMass;
+      sun->setVelocity(vxSunNew, vySunNew);
+      // remove body and item from the scene
       removeBodyItem(bodyItem);
     }
   }

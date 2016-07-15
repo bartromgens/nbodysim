@@ -32,7 +32,7 @@ BodyItem::getItem() const
 }
 
 
-const Body*
+Body*
 BodyItem::getBody() const
 {
   return m_body.get();
