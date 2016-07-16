@@ -23,18 +23,12 @@ int testBasic()
 {
   const double G = 2.0;
   std::unique_ptr<Environment> environment = std::unique_ptr<Environment>(new Environment(G));
-  Body* bodyA = new Body(environment.get());
   double mass = 100.0;
-  bodyA->setMass(mass);
-  bodyA->setPosition(0.0, 0.0);
-  bodyA->setVelocity(0.0, 0.0);
+  Body* bodyA = new Body(environment.get(), 0.0, 0.0, 0.0, 0.0, mass);
   environment->addBody(bodyA);
 
-  Body* bodyB = new Body(environment.get());
   double radius = 2.0;
-  bodyB->setMass(0.0);
-  bodyB->setPosition(radius, 0.0);
-  bodyB->setVelocity(0.0, std::sqrt(mass*G/radius));
+  Body* bodyB = new Body(environment.get(), radius, 0.0, 0.0, std::sqrt(mass*G/radius), 0.0);
   environment->addBody(bodyB);
 
   double duration = 60.0;
@@ -56,27 +50,17 @@ int testSolarSystem()
 {
   const double gravitationalConstant = 6.67408e-11;
   std::unique_ptr<Environment> solarSystem = std::unique_ptr<Environment>(new Environment(gravitationalConstant));
-  Body* sun = new Body(solarSystem.get());
   const double sunMass = 1.989e30;
-  sun->setMass(sunMass);
-  sun->setPosition(0.0, 0.0);
-  sun->setVelocity(0.0, 0.0);
+  Body* sun = new Body(solarSystem.get(), 0.0, 0.0, 0.0, 0.0, sunMass);
   solarSystem->addBody(sun);
 
-  Body* earth = new Body(solarSystem.get());
-  solarSystem->addBody(earth);
   const double earthMass = 5.972e24;
-  earth->setMass(earthMass);
   const double muSun = sunMass*gravitationalConstant;
   const double earthEccentricity = 0.0167086;
   double earthApogeeX = 152.10e9;
   double earthApogeeVy = std::sqrt(muSun/earthApogeeX*(1.0-earthEccentricity));
-  std::cout << "mu: " << muSun << std::endl;
-  std::cout << "earthApogeeX: " << earthApogeeX << std::endl;
-  std::cout << "earthApogeeVy: " << earthApogeeVy << std::endl;
-
-  earth->setPosition(earthApogeeX, 0.0);
-  earth->setVelocity(0.0, earthApogeeVy);
+  Body* earth = new Body(solarSystem.get(), earthApogeeX, 0.0, 0.0, earthApogeeVy, earthMass);
+  solarSystem->addBody(earth);
 
   sun->printPosition();
   sun->printVelocity();

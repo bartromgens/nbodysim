@@ -12,19 +12,20 @@ class Environment;
 class Body
 {
 public:
-  explicit Body(Environment* environment);
+  explicit Body(Environment* environment, double x, double y, double vx, double vy, double mass, double radius=1.0);
   ~Body();
 
   void integrate(double stepsize);
 
-  void setPosition(double m_x, double y);
-  void setVelocity(double vxin, double vyin);
+  void setPosition(double x, double y);
+  void setVelocity(double vx, double vy);
+
+  const std::array<double, 4>& getState() const;
 
   void setMass(double mass);
-
   double getMass() const;
-  const std::array<double, 4>& getState() const;
-  const std::array<double, 2>& getParameters() const;
+
+
 
   void printPosition() const;
   void printVelocity() const;
@@ -38,7 +39,8 @@ private:
   static unsigned int ms_nextUniqueId;
   unsigned int m_id;
   std::array<double, 4> m_x;
-  std::array<double, 2> m_para; // {mass, radius}
+  double m_mass;
+  double m_radius;
 
   Environment* m_environment;
 };

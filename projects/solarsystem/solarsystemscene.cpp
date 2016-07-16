@@ -29,40 +29,28 @@ SolarSystemScene::SolarSystemScene()
   m_sunItem(0)
 {
   const double sunMass = 1.989e30;
-  Body* sun = new Body(m_environment.get());
-  sun->setMass(sunMass);
-  sun->setVelocity(0.0, 0.0);
-  sun->setPosition(0.0, 0.0);
+  Body* sun = new Body(m_environment.get(), 0.0, 0.0, 0.0, 0.0, sunMass);
   m_sunItem = addBody(sun, Qt::yellow);
 
-  Body* earth = new Body(m_environment.get());
   double earthEccentricity = 0.0167086;
   const double earthMass = 5.972e24;
-  earth->setMass(earthMass);
   double earthX = 152.10e9;
   double earthVy = calcOrbitalVelocity(earthX, earthEccentricity, muSun);
-  earth->setPosition(earthX, 0.0);
-  earth->setVelocity(0.0, -earthVy);
+  Body* earth = new Body(m_environment.get(), earthX, 0.0, 0.0, -earthVy, earthMass);
   addBody(earth);
 
-  Body* venus = new Body(m_environment.get());
   double venusEccentricity = 0.006772;
   const double venusMass = 4.8675e24;
-  venus->setMass(venusMass);
   double venusX = 108.939e9;
   double venusVy = calcOrbitalVelocity(venusX, venusEccentricity, muSun);
-  venus->setPosition(venusX, 0.0);
-  venus->setVelocity(0.0, -venusVy);
+  Body* venus = new Body(m_environment.get(), venusX, 0.0, 0.0, -venusVy, venusMass);
   addBody(venus);
 
-  Body* mercury = new Body(m_environment.get());
   double mercuryEccentricity = 0.205630;
   const double mercuryMass = 3.3011e23;
-  mercury->setMass(mercuryMass);
   double mercuryX = 69.81690e9;
   double mercuryVy = calcOrbitalVelocity(mercuryX, mercuryEccentricity, muSun);
-  mercury->setPosition(mercuryX, 0.0);
-  mercury->setVelocity(0.0, -mercuryVy);
+  Body* mercury = new Body(m_environment.get(), mercuryX, 0.0, 0.0, -mercuryVy, mercuryMass);
   addBody(mercury);
 
 //  Body* moon = new Body(m_environment.get());
@@ -127,13 +115,10 @@ SolarSystemScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
   if (m_newBody)
   {
-    Body* body = new Body(m_environment.get());
-    body->setMass(m_newBody->m_mass);
     QPointF envPos = BodyItem::sceneToEnv(m_newBody->scenePos);
     QPointF velVect = event->scenePos() - m_newBody->scenePos;
     velVect = velVect * 2.0e2;
-    body->setPosition(envPos.x(), envPos.y());
-    body->setVelocity(velVect.x(), velVect.y());
+    Body* body = new Body(m_environment.get(), envPos.x(), envPos.y(), velVect.x(), velVect.y(), m_newBody->m_mass);
     addBody(body, Qt::green);
     removeItem(m_tempBodyItem);
     delete m_tempBodyItem;

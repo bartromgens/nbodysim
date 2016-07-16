@@ -21,7 +21,7 @@ public:
   void oneStep(double tEnd, double stepsize);
 //  void oneStepThread(double tEnd, double stepsize);
 
-  std::array<double, 4> getStateDerivative(const std::array<double, 4>& x0, Body* ignoreBody);
+  std::array<double, 4> getStateDerivative(const std::array<double, 4>& x0, const Body* ignoreBody) const;
 
   double getFieldStrength(double x, double y);
   double getEnergy();
@@ -36,15 +36,9 @@ private:
   std::vector<Body*> m_bodies;
   std::vector<Body*> m_masslessBodies;
 
-  std::array<double, 4> m_x1;
-  std::array<double, 4> m_x2;
-
-  std::array<double, 2> m_para1;
-  std::array<double, 2> m_para2;
-
   std::array<double, 4> m_stateDerivative;
 
-  mutable std::mutex m_mutex;
+//  mutable std::mutex m_mutex;
 };
 
 #endif /* ENVIRONMENT_H_ */

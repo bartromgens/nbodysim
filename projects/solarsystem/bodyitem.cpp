@@ -18,7 +18,6 @@ BodyItem::BodyItem(Body* body, const QColor& color)
   m_radius(1.0)
 {
   m_radius = calcRadius(body->getMass());
-  std::cout << "radius: " << m_radius << std::endl;
   m_item = new QGraphicsEllipseItem(0, 0, 2*m_radius, 2*m_radius);
   m_item->setPen(QPen(color));
   m_item->setBrush(QBrush(color));

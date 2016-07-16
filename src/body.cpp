@@ -6,19 +6,17 @@
 
 unsigned int Body::ms_nextUniqueId = 1;
 
-Body::Body(Environment* environment)
+Body::Body(Environment* environment, double x, double y, double vx, double vy, double mass, double radius)
 : m_id(ms_nextUniqueId++),
   m_x(),
-  m_para(),
+  m_mass(mass),
+  m_radius(radius),
   m_environment(environment)
 {
-  m_x[0] = 200.0;
-  m_x[1] = 200.0;
-  m_x[2] = 0;
-  m_x[3] = 0;
-
-  m_para[0] = 1.0; // mass [kg]
-  m_para[1] = 15.0; // radius [m]
+  m_x[0] = x;
+  m_x[1] = y;
+  m_x[2] = vx;
+  m_x[3] = vy;
 }
 
 
@@ -28,32 +26,32 @@ Body::~Body()
 
 
 void
-Body::setPosition(double xin, double yin)
+Body::setPosition(double x, double y)
 {
-  m_x[0] = xin;
-  m_x[1] = yin;
+  m_x[0] = x;
+  m_x[1] = y;
 }
 
 
 void
-Body::setVelocity(double vxin, double vyin)
+Body::setVelocity(double vx, double vy)
 {
-  m_x[2] = vxin;
-  m_x[3] = vyin;
+  m_x[2] = vx;
+  m_x[3] = vy;
 }
 
 
 void
 Body::setMass(double mass)
 {
-  m_para[0] = mass;
+  m_mass = mass;
 }
 
 
 double
 Body::getMass() const
 {
-  return m_para[0];
+  return m_mass;
 }
 
 
@@ -61,13 +59,6 @@ const std::array<double, 4>&
 Body::getState() const
 {
   return m_x;
-}
-
-
-const std::array<double, 2>&
-Body::getParameters() const
-{
-  return m_para;
 }
 
 
