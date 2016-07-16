@@ -7,7 +7,6 @@
 #include <vector>
 
 class Drawable;
-class Integrator;
 class Environment;
 
 class Body
@@ -16,7 +15,7 @@ public:
   explicit Body(Environment* environment);
   ~Body();
 
-  void oneStep(double stepsize);
+  void integrate(double stepsize);
 
   void setPosition(double m_x, double y);
   void setVelocity(double vxin, double vyin);
@@ -41,10 +40,7 @@ private:
   std::array<double, 4> m_x;
   std::array<double, 2> m_para; // {mass, radius}
 
-  std::unique_ptr<Integrator> m_integrator;
   Environment* m_environment;
-
-  int m_nSteps;
 };
 
 #endif /* BODY_H_ */

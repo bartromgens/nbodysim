@@ -83,11 +83,11 @@ Environment::oneStepImpl(double tEnd, double stepsize)
   {
     for (std::size_t i = 0; i < m_bodies.size(); i++)
     {
-      m_bodies[i]->oneStep(stepsize);
+      m_bodies[i]->integrate(stepsize);
     }
     for (std::size_t i = 0; i < m_masslessBodies.size(); i++)
     {
-      m_masslessBodies[i]->oneStep(stepsize);
+      m_masslessBodies[i]->integrate(stepsize);
     }
   }
 }

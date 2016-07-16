@@ -11,12 +11,10 @@ VPATH += $$INCLUDEPATH
 SOURCES += \
   body.cpp \
   environment.cpp \
-  integrator.cpp \
 
 HEADERS += \
   body.h \
   environment.h \
-  integrator.h \
 
 UI_DIR += ./generated
 MOC_DIR += ./generated
